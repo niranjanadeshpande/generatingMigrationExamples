@@ -1,16 +1,16 @@
 public getConnection(){
-  MongoDatabase sampleDB = mongoClient.getDatabase("libraryDB");
-  return sampleDB;
+  Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/libraryDB");
+  return conn;
 }
 
-public getData(){
-  Document currentBook = new Document("_id", new ObjectId());
-  currentBook.append("title:","Intro to Evolutionary Computing").append("author:","Eiben");
-  return currentBook;
+public getData(connect){
+  String query = "Insert into books VALUES ('Intro to Evolutionary Computing', 'Eiben')";
+  return query;
 }
 
 public putData(){
-  Document entry = getData();
-  MongoCollection<Document> bookCollection = getConnection().getCollection("books");
-  bookCollection.insertOne(entry);
+  Connection connect = getConnection();
+  Statement stmt = (Statement) connect.createStatement();
+  String entry = getData(connect);
+  stmt.executeUpdate(entry);
 }
